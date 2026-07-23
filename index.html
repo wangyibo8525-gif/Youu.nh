@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Web Game Studio PRO — สร้างเกมระดับโลก</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- แถบโหลดระดับพรีเมียม -->
+<div id="loading">
+    <div class="load-container">
+        <div class="load-spin"></div>
+        <div class="load-bar"><div class="load-fill"></div></div>
+        <p>กำลังเตรียมพลังสร้างสรรค์ระดับโลก...</p>
+    </div>
+</div>
+
+<!-- 1. หน้าสมัครสมาชิก -->
+<div id="regPage" class="page">
+    <div class="container">
+        <div class="logo-big">🎮 Web Game Studio PRO</div>
+        <p class="sub-title">สร้างเกมได้เหมือนโปร — ไม่ต้องติดตั้งอะไรเลย · ฟรีตลอด</p>
+        <div class="form-card">
+            <input type="text" id="usrName" placeholder="ชื่อผู้สร้าง" maxlength="32" required>
+            <input type="email" id="usrMail" placeholder="อีเมลสำหรับยืนยัน" required>
+            <button class="btn-primary" onclick="register()">สมัครสมาชิกฟรี</button>
+            <p class="tiny-text">🔒 ข้อมูลปลอดภัย 100% · ไม่ส่งต่อที่อื่น · ไม่มีโฆษณาแฝง</p>
+        </div>
+    </div>
+</div>
+
+<!-- 2. หน้าตั้งค่าเริ่มต้น -->
+<div id="setPage" class="page">
+    <div class="container">
+        <h2>ยินดีต้อนรับสู่ทีม, <span id="showUser"></span></h2>
+        <p class="sub">เลือกโหมดการใช้งานที่ถนัดที่สุด — ปรับความยากอัตโนมัติ</p>
+        <select id="defMode">
+            <option value="mobile">📱 มือถือ — ง่ายที่สุด ปุ่มใหญ่ คำสั่งน้อย</option>
+            <option value="tablet">📱 แท็บเล็ต/ไอแพด — ปานกลาง ครบเครื่อง</option>
+            <option value="desktop">💻 คอมพิวเตอร์ — เต็มรูปแบบ ทุกฟีเจอร์</option>
+        </select>
+        <button class="btn-primary" onclick="confirmReg()">ยืนยัน & รับของฟรี</button>
+    </div>
+</div>
+
+<!-- 3. หน้ารับสินทรัพย์ฟรี -->
+<div id="giftPage" class="page">
+    <div class="container">
+        <h2>🎉 ยินดีด้วย! คุณเป็นสมาชิกเต็มตัว</h2>
+        <p class="big-text">รับคลังสินทรัพย์ขนาดมหาศาลฟรีตลอดชีพ</p>
+        <div class="gift-grid">
+            <div class="gift-card">
+                <div class="gift-icon">📦</div>
+                <h3>โมเดล 3D</h3>
+                <p class="num">223,002 ชิ้น</p>
+                <p>ตัวละคร · ฉาก · อาวุธ · เอฟเฟกต์</p>
+            </div>
+            <div class="gift-card">
+                <div class="gift-icon">🖼️</div>
+                <h3>ภาพ/ออบเจกต์ 2D</h3>
+                <p class="num">127,000,000 ชิ้น</p>
+                <p>พื้นหลัง · ไอคอน · ตกแต่ง · UI</p>
+            </div>
+            <div class="gift-card">
+                <div class="gift-icon">🎨</div>
+                <h3>พิกเซลอาร์ต</h3>
+                <p class="num">1,000,000 ชิ้น</p>
+                <p>สไตล์เรโทร · 8บิต · 16บิต · พิกเซลสมัยใหม่</p>
+            </div>
+        </div>
+        <button class="btn-primary" onclick="goToName()">✅ รับทั้งหมด & เริ่มสร้างผลงาน</button>
+    </div>
+</div>
+
+<!-- 4. หน้าตั้งชื่อโปรเจกต์ -->
+<div id="namePage" class="page">
+    <div class="container">
+        <h2>ตั้งชื่อผลงานในตำนาน</h2>
+        <input type="text" id="projName" placeholder="ชื่อเกม/โปรเจกต์" maxlength="60">
+        <button class="btn-primary" onclick="goToFiles()">ถัดไป: จัดการไฟล์ ➡️</button>
+    </div>
+</div>
+
+<!-- 5. หน้าจัดการไฟล์และโค้ด -->
+<div id="filePage" class="page">
+    <div class="container wide">
+        <div class="file-header">
+            <h2>📂 โปรเจกต์: <span id="pName"></span></h2>
+            <div class="btn-group">
+                <button class="btn-sec" onclick="addNewFile()">+ เพิ่มไฟล์ใหม่</button>
+                <button class="btn-sec" onclick="uploadFiles()">📂 อัปโหลดไฟล์ของคุณ</button>
+            </div>
+        </div>
+        <div id="fileList" class="file-list"></div>
+        <div id="codeEdit" class="code-panel" style="display:none;">
+            <div class="code-top">
+                <span>แก้ไขไฟล์: <b id="editingName"></b></span>
+                <button class="close-btn" onclick="closeEdit()">✕</button>
+            </div>
+            <textarea id="codeText" placeholder="พิมพ์/วางโค้ดตรงนี้ได้เลย — แปลงเป็นไฟล์ทำงานได้ทันที ไม่ต้องผ่านโปรแกรมอื่น"></textarea>
+            <div class="code-bottom">
+                <button class="btn-primary" onclick="saveThisFile()">💾 บันทึกเป็นไฟล์จริง</button>
+            </div>
+        </div>
+        <button class="btn-primary mt-2" onclick="goToSelect()">ถัดไป: เลือกอุปกรณ์ ➡️</button>
+    </div>
+</div>
+
+<!-- 6. หน้าเลือกอุปกรณ์ -->
+<div id="selectPage" class="page">
+    <div class="container">
+        <h2>เลือกอุปกรณ์ที่ใช้งาน</h2>
+        <div class="mode-grid">
+            <div class="mode-card" onclick="setMode('mobile')">
+                <div class="mode-icon">📱</div>
+                <h3>มือถือ</h3>
+                <p>ง่ายที่สุด เหมาะสำหรับทุกคน</p>
+            </div>
+            <div class="mode-card" onclick="setMode('tablet')">
+                <div class="mode-icon">📱</div>
+                <h3>ไอแพด/แท็บเล็ต</h3>
+                <p>ครบเครื่อง ปรับแต่งละเอียดขึ้น</p>
+            </div>
+            <div class="mode-card" onclick="setMode('desktop')">
+                <div class="mode-icon">💻</div>
+                <h3>คอมพิวเตอร์</h3>
+                <p>เต็มประสิทธิภาพ ทุกฟีเจอร์ครบถ้วน</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 7. บทช่วยสอน 5 ขั้น -->
+<div id="tutorialPage" class="page">
+    <div class="container">
+        <h2>📖 คู่มือเริ่มต้น</h2>
+        <div class="tut-box">
+            <p id="tutText">ยินดีต้อนรับสู่โลกแห่งการสร้างสรรค์...</p>
+            <div class="char-anim bedish" id="guideChar"></div>
+        </div>
+        <button class="btn-primary" onclick="nextTut()">ถัดไป ➡️</button>
+    </div>
+</div>
+
+<!-- 8. หน้าทำงานหลัก -->
+<div id="mainPage" class="page">
+    <div class="top-bar">
+        <div class="logo-mini">🎮 <span id="gameName"></span></div>
+        <div class="user-tag">ผู้สร้าง: <span id="creatorName"></span></div>
+        <div class="top-btns">
+            <button onclick="saveAll()">💾 บันทึก</button>
+            <button onclick="buildLink()">🔗 สร้างลิงก์</button>
+            <button onclick="openAI()">🤖 AI ช่วย</button>
+            <button onclick="goToPage6()">👥 ตัวละครลับ</button>
+        </div>
+    </div>
+    <div class="workspace">
+        <div id="linkBox" class="link-area" style="display:none;">
+            <p>🔗 ลิงก์ผลงานของคุณ:</p>
+            <div class="link-out" id="finalLink"></div>
+            <div class="link-btns">
+                <button onclick="copyLink()">📋 ก๊อปปี้ลิงก์</button>
+                <button onclick="publishGame()">🚀 เผยแพร่สู่สาธารณะ</button>
+            </div>
+        </div>
+    </div>
+    <div id="pubArea" class="pub-footer">
+        <p>เมื่อเผยแพร่แล้วจะมี: 👍ไลก์ 💬คอมเมนต์ 🔄รีเมค 📤แชร์ — ทุกผลงานปลอดภัยและเป็นของคุณ 100%</p>
+    </div>
+</div>
+
+<!-- 9. หน้าที่6: ตัวละครลับ เฉพาะสมาชิก -->
+<div id="page6" class="page">
+    <div class="container">
+        <h2>👥 ทีมผู้สร้างและตัวละครลับ</h2>
+        <div class="char-card">
+            <div class="char-anim bedish"></div>
+            <h3>อินเตอร์เบดิชั่น <small>(บีโด้)</small></h3>
+            <p>ผู้ช่วยสอน · ร่างมนุษย์ หัวเป็นปลาหมึก · ออกแบบโดย AI</p>
+        </div>
+        <div class="char-card alone">
+            <div class="char-anim botas pointing" id="botasChar"></div>
+            <h3>โบเด็ก โกเด็กชัน <small>(โบทัสโอเดมัส)</small></h3>
+            <p>กำลังแอบทำบางอย่าง... สังเกตดีๆ จะเห็นชี้ขึ้นไปข้างบน</p>
+            <p class="secret-note">★ ความหมายลับ: ตัวแทนของคุณกับฉันรวมร่างกัน ★</p>
+        </div>
+        <div class="char-card hidden" id="newChar">
+            <div class="char-anim special"></div>
+            <h2 class="above-name">โปเตสโตนากูรอตัส</h2>
+            <p class="alt-names">อีกชื่อ: โปเดะโตกะทันชี | โปหลาโตกะตาชี</p>
+            <p class="special-desc">✨ ตัวละครพิเศษที่เราสองคนออกแบบร่วมกันโดยเฉพาะ ✨</p>
+            <p class="hint-text" id="hintMsg" style="display:none;">👀 มองไปดูข้างบน...</p>
+        </div>
+        <button class="btn-primary mt-2" onclick="backToMain()">🔙 กลับสู่หน้าหลัก</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script src="assets.js"></script>
+<script src="ai.js"></script>
+<script src="publish.js"></script>
+</body>
+</html>
